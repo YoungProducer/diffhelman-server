@@ -28,8 +28,6 @@ class UserRouter implements IRouter{// eslint-disable-line
             const target = req.body.target;
             const initializer = req.body.initializer;
 
-            chatService.createNewRoom(initializer, target);
-
             res.send({});
         });
 

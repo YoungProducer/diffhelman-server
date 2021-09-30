@@ -1,4 +1,5 @@
-import { guidGenerator } from "src/helpers/guid";
+import { guidGenerator } from "../../../helpers/guid";
+import { ConnectedUser } from "../../../modules/user/services/userService.interface";
 import { IChatService, Room, Rooms } from "./chatservice.interface";
 
 export class ChatService implements IChatService {
@@ -11,15 +12,21 @@ export class ChatService implements IChatService {
 
   setOnRoomCreateCallback = (cb: (room: Room) => void) => this.onRoomCreateCallback = cb;
 
-  createNewRoom = (initializer: string, target: string) => {
+  createNewRoom = (initializer: ConnectedUser) => {
     const roomId = guidGenerator();
 
     this.rooms[roomId] = {
       userAId: initializer,
-      userBId: target,
+      userBId: undefined,
     }
 
     this.onRoomCreateCallback(this.rooms[roomId]);
+
+    return roomId;
+  }
+
+  connectToRoom = (roomId: string, invitedUser: ConnectedUser) => {
+    this.rooms[roomId].userBId = invitedUser;
   }
 }
 

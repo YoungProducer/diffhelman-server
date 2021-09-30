@@ -1,6 +1,8 @@
+import { ConnectedUser } from "src/modules/user/services/userService.interface";
+
 export interface Room {
-  userAId?: string;
-  userBId?: string;
+  userAId?: Partial<ConnectedUser>;
+  userBId?: Partial<ConnectedUser>;
 }
 
 export interface Rooms {

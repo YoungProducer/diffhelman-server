@@ -18,6 +18,14 @@ class UserService implements IUserService {// eslint-disable-line
         this.onUsersUpdateCb(this.onlineUsers);
     }
 
+    getUserByName = (username: string) => {
+        const user = this.onlineUsers.find(user => user.username === username);
+
+        return user;
+    }
+
+    getUserBySockId = (id: string) => this.onlineUsers.find(user => user.socketId === id);
+
     async getRandomTest(): Promise<any> {
         try {
             logger.info("success")
