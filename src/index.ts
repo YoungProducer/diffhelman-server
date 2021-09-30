@@ -7,11 +7,14 @@ import { logger } from './helpers/logger'
 Environment.setup();
 
 import { config } from './config/config';
+import { ChatSocks } from './modules/chat/chatSocks';
+import { UserSocks } from './modules/user/userSocks';
 
 async function startServer() {
     await server.server();
 
-    server.io.on('connection', (socket) => console.log('new connection ', socket.id));
+    new ChatSocks(server.io);
+    new UserSocks(server.io);
 
     server.httpServer.listen(config.SERVER_PORT, () => {
         console.log(`Listening on port ${config.SERVER_PORT} in ${config.NODE_ENV} mode`);
