@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import { createServer } from 'http';
+import { Server as HTTPServer } from 'http';
 import { Server as SockServer } from 'socket.io';
 import { ServerInterface } from './app.interface';
 import baseRouter from '../modules/baseRouter'
@@ -9,6 +9,7 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 class Server implements ServerInterface {// eslint-disable-line
   public app!: Application;
   public io!: SockServer<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>;
+  public httpServer!: HTTPServer;
 
   async server(): Promise<void> {
     const app = express();
@@ -21,9 +22,9 @@ class Server implements ServerInterface {// eslint-disable-line
     });
     app.use(cors());
 
-    const httpServer = createServer(app);
+    this.httpServer = new HTTPServer(app);
 
-    this.io = new SockServer(httpServer);
+    this.io = new SockServer(this.httpServer);
     this.app = app;
   }
 }

@@ -11,7 +11,9 @@ import { config } from './config/config';
 async function startServer() {
     await server.server();
 
-    server.app.listen(config.SERVER_PORT, () => {
+    server.io.on('connection', (socket) => console.log('new connection ', socket.id));
+
+    server.httpServer.listen(config.SERVER_PORT, () => {
         console.log(`Listening on port ${config.SERVER_PORT} in ${config.NODE_ENV} mode`);
         logger.info(`Listening on port ${config.SERVER_PORT} in ${config.NODE_ENV} mode`);
     });
