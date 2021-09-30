@@ -26,6 +26,7 @@
     "ava": "^3.15.0",
     "eslint": "^7.32.0",
     "fs-extra": "^10.0.0",
+    "socket.io": "^4.2.0",
     "ts-node": "^10.2.1",
     "typescript": "~4.3"
   },
@@ -39,5 +40,9 @@
         "test/": "dist/test/"
       }
     }
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.4",
+    "utf-8-validate": "^5.0.6"
   }
 }
