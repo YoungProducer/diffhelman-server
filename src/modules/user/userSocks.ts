@@ -54,7 +54,7 @@ export class UserSocks {
 
         socket.join(roomId);
 
-        this.instance.to(invitedUser.socketId).emit('recive-invite', { roomId });
+        this.instance.to(invitedUser.socketId).emit('recive-invite', { roomId, username: currentUser.username });
       })
 
       socket.on('accept-invite', ({ roomId }: AcceptInvitePayload) => {
