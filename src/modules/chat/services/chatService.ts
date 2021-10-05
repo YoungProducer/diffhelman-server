@@ -34,7 +34,21 @@ export class ChatService implements IChatService {
   generateKeys = (roomId: string) => {
     const p = generatePublicKey(5000, 10000);
     const a = getRandomInt(50, 100);
+
+    this.rooms[roomId].pKey = p;
+    this.rooms[roomId].aKey = a;
+
+    return { p, a };
   }
+
+  getOpositeUser = (roomId: string, initiatorSockId: string) => {
+    const room = this.rooms[roomId];
+
+    if (room.userAId.socketId === initiatorSockId) return room.userBId;
+    if (room.userBId.socketId === initiatorSockId) return room.userAId;
+
+    return undefined;
+}
 }
 
 export default new ChatService();

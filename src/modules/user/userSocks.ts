@@ -15,6 +15,11 @@ interface AcceptInvitePayload {
   roomId: string;
 }
 
+interface SendPublicKeyPayload {
+  roomId: string;
+  key: number;
+}
+
 export class UserSocks {
   instance: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>;
 
@@ -64,8 +69,20 @@ export class UserSocks {
 
         socket.join(roomId);
 
-        this.instance.to(roomId).emit('invite-accepted', { message: 'Connection established' });
-      })
+        const { p, a } = chatService.generateKeys(roomId);
+
+        this.instance.to(roomId).emit('invite-accepted', { message: 'Connection established', keys: { p, a }, roomId });
+      });
+
+      socket.on('send-public-key', ({ roomId, key }: SendPublicKeyPayload) => {
+        const receiver = chatService.getOpositeUser(roomId, socket.id);
+
+        if (!receiver) {
+          this.instance.to(socket.id).emit('send-public-key-res', { message: 'Something went wrong!', data: undefined });
+        }
+
+        this.instance.to(receiver.socketId).emit('accept-public-key', { key });
+      });
     });
   }
 }
